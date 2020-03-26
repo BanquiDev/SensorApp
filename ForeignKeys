@@ -1,0 +1,23 @@
+			Schema::table('sensores', function (Blueprint $table) {
+				$table->foreign('sensores_hospital_id')->references('id')->on('users');
+			});   
+            Schema::table('proveedores', function (Blueprint $table) {
+                $table->foreign('proveedores_hospital_id')->references('id')->on('users');
+            });
+                Schema::table('datos', function (Blueprint $table) {
+                    $table->foreign('sensor_id')->references('id')->on('sensores');
+            }); 
+			
+			
+			
+		Schema::table('sensores', function (Blueprint $table) {
+            $table->dropForeign(['hospital_id']);
+        });
+
+        Schema::table('proveedores', function (Blueprint $table) {
+            $table->dropForeign(['hospital_id']);
+        });
+
+        Schema::table('datos', function (Blueprint $table) {
+            $table->dropForeign(['sensor_id']);
+        });
