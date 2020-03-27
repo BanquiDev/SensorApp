@@ -19,8 +19,9 @@ class ProveedoresController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $proveedores = Proveedores::all();
+    {   $user = Auth::user();
+
+        $proveedores = Proveedores::where('hospital_id', $user->id)->get();
         //var_dump($proveedores);
         return view ('proveedores-listado', compact('proveedores'));
     }
@@ -69,7 +70,9 @@ class ProveedoresController extends Controller
      */
     public function show($id)
     {
-        //
+        $proveedor = Proveedores::find($id);
+
+        return view ('/proveedor', compact('proveedor'));
     }
 
     /**
@@ -80,7 +83,16 @@ class ProveedoresController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        //dd($user);
+        $proveedor = Proveedores::find($id);
+        //dd($proveedor);
+        if ($proveedor->hospital_id == $user->id) {
+            
+            return view('proveedores-editar-form', compact('proveedor'));
+        }else{
+            return redirect()->route('home');
+        }
     }
 
     /**
@@ -91,8 +103,17 @@ class ProveedoresController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        $user = Auth::user();
+        $proveedor = Proveedores::findOrFail($id);
+        $proveedor->hospital_id = $user->id;
+        $proveedor->nombre = $request->name;
+        $proveedor->descripcion = $request->description;
+        $proveedor->email = $request->email;
+        $proveedor->celular = $request->telefono;
+        $proveedor->update();
+
+        return redirect()->route('proveedores-listado');
     }
 
     /**
@@ -103,6 +124,9 @@ class ProveedoresController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $proveedor = Proveedores::find($id);
+        $proveedor->delete();
+        //dd($proveedor);
+        return redirect('home');
     }
 }

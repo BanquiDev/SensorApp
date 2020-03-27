@@ -10,7 +10,7 @@ class Sensores extends Model
         return $this->belongsTo('App\User', 'hospital_id');
     }
 
-    public function sensores(){
+    public function datos(){
         return $this->hasMany('App\Datos', 'sensor_id');
     }
 }

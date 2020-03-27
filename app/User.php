@@ -32,4 +32,7 @@ class User extends Authenticatable
     public function sensores(){
         return $this->hasMany(Sensores::class, 'hospital_id');
     }
+    public function datos(){
+        return $this->hasMany(Datos::class, 'hospital_id');
+    }
 }

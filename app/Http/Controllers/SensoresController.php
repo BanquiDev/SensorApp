@@ -24,24 +24,32 @@ class SensoresController extends Controller
     {   //Usuario Logeado
         $user = Auth::user();
         $sensorestodos = Sensores::all();
-        $datos = Datos::all();
-        $datos2 = Datos::where('sensor_id', 2);
-        
-        //dd($datos2);
+           
 
         //Sensores x Usuario
-        $sensores = Sensores::where('hospital_id', '=', $user->id)->get();
+        $sensores = Auth::user()->sensores;
+        $sensores_id = [];
+        //dd($sensores);
+       // foreach ($sensores as $sensor) {
+         //    dd($sensor->hospital_id);}
+            //$sensores_id = ['$sensor->id'];       }
+        //dd($sensores);
+        //dd($user->id);
+        $sensores_id = Sensores::where('hospital_id', '=', $user->id)->get();
 
-        $sensores_id = Sensores::where('hospital_id', '=', $user)->pluck('id');
-        //dd($sensores_id);
+        $ids = [];
+        // foreach($sensores_id as $value){
+        //     dd($value->id);
+        // }
+        
         
         //Graficos
-        $temperatura = DB::table('datos')->where('sensor_id', $sensores_id)
-                                         ->pluck('temperatura');
-        $humedad = DB::table('datos')->where('sensor_id', $sensores_id)
+        $temperatura = DB::table('datos')->where('sensor_id', '4')->pluck('temperatura');
+                                                                            
+        $humedad = DB::table('datos')->where('sensor_id', '4')
                                      ->pluck('humedad');
         
-        dd($temperatura);
+        //dd($temperatura);
         
         $chartTemperatura = new DatosSensores;
        

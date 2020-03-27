@@ -6,7 +6,7 @@
 
     @foreach($proveedores as $proveedor)
         <ul>
-            <li>{{$proveedor->nombre}}</li>
+            <li><a href="/proveedor/{{$proveedor->id}}">{{$proveedor->nombre}}</a></li>
         </ul>
     @endforeach
 </div>
