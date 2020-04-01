@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use App\Notifications\Bienvenido;
 use App\Proveedores;
 use App\User;
+use App\Tarea;
 use Auth;
 
 class ProveedoresController extends Controller
@@ -18,11 +20,18 @@ class ProveedoresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+    //$this->middleware('auth:proveedor');
+    }
+
+
+
     public function index()
     {   $user = Auth::user();
 
-        $proveedores = Proveedores::where('hospital_id', $user->id)->get();
-        //var_dump($proveedores);
+        $proveedores = $user->proveedores;
+        
         return view ('proveedores-listado', compact('proveedores'));
     }
 
@@ -56,7 +65,8 @@ class ProveedoresController extends Controller
         $proveedor->email = $request->email;
         $proveedor->celular = $request->telefono;
         $proveedor->save();
-        
+        $user->notify(new Bienvenido);
+
         return redirect()->route('home')->with(array(
             'message' => 'Te has registrado como proovedor!'
         ));
@@ -70,7 +80,7 @@ class ProveedoresController extends Controller
      */
     public function show($id)
     {
-        $proveedor = Proveedores::find($id);
+        $proveedor = Proveedores::findOrFail($id);
 
         return view ('/proveedor', compact('proveedor'));
     }
@@ -85,7 +95,7 @@ class ProveedoresController extends Controller
     {
         $user = Auth::user();
         //dd($user);
-        $proveedor = Proveedores::find($id);
+        $proveedor = Proveedores::findOrFail($id);
         //dd($proveedor);
         if ($proveedor->hospital_id == $user->id) {
             
@@ -128,5 +138,20 @@ class ProveedoresController extends Controller
         $proveedor->delete();
         //dd($proveedor);
         return redirect('home');
+    }
+
+    public function login(){
+        
+        return view ('proveedores-login');
+    }
+
+    public function checked(Request $request){
+            //dd($request);
+            $email = $request->email;
+            $proveedor = Proveedores::where('email', $email)->get();
+            $tareas = Tarea::where('proveedor_id', $proveedor[0]->id)->get();
+           //dd($proveedor);
+            return view('proveedor-panel', compact('proveedor', 'tareas'));
+    
     }
 }

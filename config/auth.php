@@ -18,6 +18,11 @@ return [
         'passwords' => 'users',
     ],
 
+    'proveedors' => [
+        'driver' => 'eloquent',
+        'model' => App\Proveedores::class, 
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -45,7 +50,18 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
-    ],
+
+        'proveedor' => [
+            'driver' => 'session',
+            'provider' => 'proveedors',
+        ],
+
+        'proveedor-api' => [
+            'driver' => 'token',
+            'provider' => 'proveedors',
+        ],    
+    
+    ],  
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +84,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'proveedors' => [
+            'driver' => 'eloquent',
+            'model' =>  Proveedores::class,
         ],
 
         // 'users' => [
@@ -94,6 +115,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'proveedors' => [
+            'provider' => 'proveedors',
             'table' => 'password_resets',
             'expire' => 60,
         ],

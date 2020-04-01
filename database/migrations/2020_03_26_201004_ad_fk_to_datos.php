@@ -13,11 +13,7 @@ class AdFkToDatos extends Migration
      */
     public function up()
     {
-        Schema::table('datos', function ( Blueprint $table){
-
-            $table->foreign('hospital_id')->references('id')->on('sensores')->onDelete('cascade');
-
-        });
+        
     }
 
     /**

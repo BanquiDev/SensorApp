@@ -21,7 +21,8 @@
             <div class="col-lg">
                     <h2 class="text-center">Sos Proovedor de Servicio??</h2>
                     <br> 
-                    <p class="text-center"><a  href="{{route('proveedores-form')}}">Registrate Como Proovedor</a></p>
+                    <p class="text-center"><a  href="/proveedores-login">Accede a la Pagina para 
+                    Proveedores</a></p>
             </div>
         </div>
     </div>
